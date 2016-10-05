@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dynamo.iml" filepath="$PROJECT_DIR$/.idea/modules/dynamo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dynamo_main.iml" filepath="$PROJECT_DIR$/.idea/modules/dynamo_main.iml" group="dynamo" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dynamo_test.iml" filepath="$PROJECT_DIR$/.idea/modules/dynamo_test.iml" group="dynamo" />
+    </modules>
+  </component>
+</project>
