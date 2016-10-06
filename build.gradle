@@ -1,5 +1,5 @@
 group 'it.polarorb'
-version '0.0.1'
+version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 
