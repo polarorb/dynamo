@@ -1,17 +1,18 @@
 buildscript {
+    apply from: '../../version.gradle'
     dependencies {
-        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.7.0'
+        classpath group: 'it.polarorb.dynamo', name: 'javafx-gradle-plugin', version: "${gradle.javafxGradlePluginVersion}"
     }
     repositories {
         mavenLocal()
         mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 
     }
 }
 apply plugin: 'java'
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
@@ -19,9 +20,5 @@ apply plugin: 'javafx-gradle-plugin'
 
 
 jfx {
-    // minimal requirement for jfxJar-task
     mainClass = 'it.polarorb.dynamo.JavaFxDemo'
-
-    // minimal requirement for jfxNative-task
-    vendor = 'YourName'
 }
