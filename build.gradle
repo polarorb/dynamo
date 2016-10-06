@@ -1,5 +1,5 @@
 // Declares binary plugin and its required JavaFX classpath
-apply from: "http://dl.bintray.com/content/shemnon/javafx-gradle/0.3.0/javafx.plugin"
+apply from: "http://dl.bintray.com/content/shemnon/javafx-gradle/8.1.1/javafx.plugin"
 
 // Configures plugin
 javafx {
