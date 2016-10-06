@@ -1,37 +1,27 @@
-// Declares binary plugin and its required JavaFX classpath
-apply from: "http://dl.bintray.com/content/shemnon/javafx-gradle/8.1.1/javafx.plugin"
-
-// Configures plugin
-javafx {
-    // Points to JDK and its JavaFX libraries, also declares target runtime JDK
-    javaRuntime = '/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk'
-
-    // Application name and ID presented by target OS
-    appID 'HelloWorldApp'
-    appName 'Hello World Application'
-
-    // Main class of application
-    mainClass 'it.polarorb.JavaFxDemo'
-
-    // JVM arguments, system properties, application command line arguments
-    jvmArgs = ['-XX:+AggressiveOpts', '-XX:CompileThreshold=1']
-    systemProperties = ['prism.disableRegionCaching':'true']
-    arguments = ['-l', '--fast']
-
-    // Keystore credentials for signing JAR
-    // Generate key: keytool -genkey -alias release -keyalg RSA -keystore keystore.jks -keysize 2048
-    releaseKey {
-        alias = 'release'
-        keyPass = 'keyStorePassword'
-        keyStore = file("keystore.jks")
-        storePass = 'keyStorePassword'
+buildscript {
+    dependencies {
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.7.0'
     }
+    repositories {
+        mavenLocal()
+        mavenCentral()
 
-    signingMode 'release'
+    }
+}
+apply plugin: 'java'
 
-    // ...
+repositories {
+    mavenLocal()
+    mavenCentral()
 }
 
-String getProjectProperty(String propertyName) {
-    project.hasProperty(propertyName) ? project.property(propertyName) : null
+apply plugin: 'javafx-gradle-plugin'
+
+
+jfx {
+    // minimal requirement for jfxJar-task
+    mainClass = 'it.polarorb.dynamo'
+
+    // minimal requirement for jfxNative-task
+    vendor = 'PolarOrb'
 }
