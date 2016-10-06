@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dynamo.iml" filepath="$PROJECT_DIR$/.idea/modules/dynamo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dynamo_main.iml" filepath="$PROJECT_DIR$/.idea/modules/dynamo_main.iml" group="dynamo" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dynamo_test.iml" filepath="$PROJECT_DIR$/.idea/modules/dynamo_test.iml" group="dynamo" />
+      <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/desktop/desktop.iml" filepath="$PROJECT_DIR$/desktop/desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dynamo.iml" filepath="$PROJECT_DIR$/dynamo.iml" />
     </modules>
   </component>
 </project>

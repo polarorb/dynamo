@@ -18,9 +18,5 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="dynamo_main" target="1.5" />
-      <module name="dynamo_test" target="1.5" />
-    </bytecodeTargetLevel>
   </component>
 </project>
