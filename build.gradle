@@ -1,5 +1,5 @@
 buildscript {
-    apply from: '../../version.gradle'
+    apply from: 'version.gradle'
     dependencies {
         classpath group: 'it.polarorb.dynamo', name: 'javafx-gradle-plugin', version: "${gradle.javafxGradlePluginVersion}"
     }
