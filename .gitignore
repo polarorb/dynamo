@@ -68,3 +68,7 @@ build/
 ## OS Specific
 .DS_Store
 Thumbs.db
+
+# Libgdx
+core/build/
+desktop/build/
