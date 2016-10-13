@@ -5,4 +5,6 @@ Dynamo is our core Java Game Engine.
 
 `git clone git@github.com:polarorb/dynamo.git`
 
+Proceed to open your IntelliJ IDEA client and `Import Project` on the main screen and then select the `build.gradle` script in the `dynamo` directory you cloned. 
+
 [![Throughput Graph](https://graphs.waffle.io/polarorb/dynamo/throughput.svg)](https://waffle.io/polarorb/dynamo/metrics/throughput)
