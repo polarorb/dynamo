@@ -3,6 +3,6 @@ Dynamo is our core Java Game Engine.
 
 ## installation instructions
 
-`git clone TODO:ADD LINK`
+`git clone git@github.com:polarorb/dynamo.git`
 
 [![Throughput Graph](https://graphs.waffle.io/polarorb/dynamo/throughput.svg)](https://waffle.io/polarorb/dynamo/metrics/throughput)
