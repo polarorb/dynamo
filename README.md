@@ -7,4 +7,8 @@ Dynamo is our core Java Game Engine.
 
 Proceed to open your IntelliJ IDEA client and `Import Project` on the main screen and then select the `build.gradle` script in the `dynamo` directory you cloned. 
 
+## running the project
+
+For the desktop application, right click the file `DesktopLauncher.java` and select `Run...`
+
 [![Throughput Graph](https://graphs.waffle.io/polarorb/dynamo/throughput.svg)](https://waffle.io/polarorb/dynamo/metrics/throughput)
