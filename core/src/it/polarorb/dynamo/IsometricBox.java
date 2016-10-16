@@ -5,9 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonRegion;
 import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Polygon;
-
-import java.util.List;
 
 /**
  * Created by erikrahtjen on 10/15/16.
@@ -21,8 +18,6 @@ public class IsometricBox {
     private final float height;
     private final float depth;
 
-    private Location location;
-    private List<Polygon> polygonList;
     private float blX;
     private float blY;
 
