@@ -16,7 +16,7 @@ public class IsometricCamera {
 
     public IsometricCamera() {
         camera = new OrthographicCamera();
-        camera.setToOrtho(true);
+        camera.setToOrtho(false);
     }
 
     public void update() {
@@ -45,10 +45,10 @@ public class IsometricCamera {
 
         if (mouseLocationY < BEZEL) {
             //moving up
-            verticalMovementMultiplier = -1;
+            verticalMovementMultiplier = 1;
         } else if (mouseLocationY > screenHeight - BEZEL) {
             //moving down
-            verticalMovementMultiplier = 1;
+            verticalMovementMultiplier = -1;
         }
         else {
             //not moving vertically
