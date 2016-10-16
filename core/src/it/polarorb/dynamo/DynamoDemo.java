@@ -81,11 +81,11 @@ public class DynamoDemo extends ApplicationAdapter {
 		spriteBatch.setProjectionMatrix(camera.getProjection());
 		spriteBatch.begin();
 		spriteBatch.setColor(Color.LIGHT_GRAY);
-		spriteBatch.draw(box.getLeftPolygonRegion(), 0, 0);
+		spriteBatch.draw(box.getLeftPolygonRegion(), 300, 150);
 		spriteBatch.setColor(Color.GRAY);
-		spriteBatch.draw(box.getRightPolygonRegion(), 0, 0);
+		spriteBatch.draw(box.getRightPolygonRegion(), 300, 150);
 		spriteBatch.setColor(Color.DARK_GRAY);
-		spriteBatch.draw(box.getRoofPolygonRegion(), 0, 0);
+		spriteBatch.draw(box.getRoofPolygonRegion(), 300, 150);
 		spriteBatch.end();
 
 	}
