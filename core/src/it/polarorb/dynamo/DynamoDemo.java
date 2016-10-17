@@ -17,13 +17,22 @@ public class DynamoDemo extends ApplicationAdapter {
 	private IsometricBox box;
 	private IsometricCamera camera;
 	private InputProcessor inputProcessor;
+    private BoxGroup northWestWallTile;
 
-	@Override
+    @Override
 	public void create () {
 		batch = new SpriteBatch();
 		spriteBatch = new PolygonSpriteBatch();
-		box = new IsometricBox();
-		img = new Texture("core/assets/badlogic.jpg");
+        IsometricBox floor = new IsometricBox(IsometricBox.DEFAULT_WIDTH*3, IsometricBox.DEFAULT_HEIGHT*3, 2);
+        IsometricBox wall = new IsometricBox(2, floor.getHeight(), IsometricBox.DEFAULT_DEPTH);
+        wall.setScreenY(floor.a());
+        IsometricBox owall = new IsometricBox(floor.getWidth(), 2, IsometricBox.DEFAULT_DEPTH);
+        owall.setScreenX(floor.c());
+        owall.setScreenY(floor.d());
+        IsometricBox wall2 = new IsometricBox(2, floor.getHeight(), IsometricBox.DEFAULT_DEPTH);
+        wall2.setScreenX(floor.b());
+        northWestWallTile = new BoxGroup(floor, wall, owall, wall2);
+        img = new Texture("core/assets/badlogic.jpg");
 		camera = new IsometricCamera();
 
 		inputProcessor = new InputProcessor() {
@@ -79,13 +88,8 @@ public class DynamoDemo extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(img, 0, 0);
 		batch.end();
-		for (int x = 0; x < COLUMNS; x++) {
-			for (int y = 0; y < ROWS; y++) {
-				box.setScreenX(y * IsometricBox.DEFAULT_WIDTH/2);
-				box.setScreenY(x * IsometricBox.DEFAULT_HEIGHT/2);
-				box.render(camera, spriteBatch);
-			}
-		}
+        spriteBatch.setProjectionMatrix(camera.getProjection());
+        northWestWallTile.render(camera, spriteBatch);
 	}
 	
 	@Override

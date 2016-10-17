@@ -1,7 +1,6 @@
 package it.polarorb.dynamo;
 
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
-import com.badlogic.gdx.utils.Disposable;
 import com.sun.istack.internal.NotNull;
 
 import java.util.ArrayList;
@@ -10,9 +9,8 @@ import java.util.List;
 /**
  * Created by erikrahtjen on 10/16/16.
  */
-public class BoxGroup implements Renderable, Disposable {
+public class BoxGroup implements Renderable {
     List<IsometricBox> renderables;
-    PolygonSpriteBatch spriteBatch;
 
     public BoxGroup(IsometricBox... isometricBoxes) {
         renderables = new ArrayList<IsometricBox>();
@@ -32,7 +30,4 @@ public class BoxGroup implements Renderable, Disposable {
         }
     }
 
-    @Override
-    public void dispose() {
-    }
 }

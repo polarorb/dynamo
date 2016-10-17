@@ -10,14 +10,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 class IsometricBox implements Renderable {
 
     static final float DEFAULT_WIDTH = 64;
-    static final float DEFAULT_HEIGHT = 32;
-    private static final float DEFAULT_DEPTH = (float) Math.sqrt(DEFAULT_HEIGHT*DEFAULT_HEIGHT + DEFAULT_WIDTH*DEFAULT_WIDTH);
+    static final float DEFAULT_HEIGHT = 64;
+    static final float DEFAULT_DEPTH = 64;
     private final float width;
     private final float height;
     private final float depth;
 
-    private float blX;
-    private float blY;
+    private float bottomLeftX;
+    private float bottomLeftY;
     private float screenX;
     private float screenY;
     private PolygonRegion rightPolygonRegion;
@@ -28,18 +28,34 @@ class IsometricBox implements Renderable {
         this(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_DEPTH);
     }
 
-    private IsometricBox(float width, float height, float depth) {
+    public IsometricBox(float width, float height, float depth) {
         this.width = width;
         this.height = height;
         this.depth = depth;
     }
 
+    float a() {
+        return width/2f;
+    }
+
+    float b() {
+        return (float) (Math.sqrt(3f)*a());
+    }
+
+    float d() {
+        return height/2f;
+    }
+
+    float c() {
+        return (float) (Math.sqrt(3f)*d());
+    }
+
     private float[] getBaseVertices() {
         return new float[]{
-                blX,blY+height/2, // BL
-                blX+width/2, blY, // BR
-                blX+width, blY + height/2, //TR
-                blX + width/2, blY + height //TL
+                bottomLeftX, bottomLeftY +a(), // BL
+                bottomLeftX +b(), bottomLeftY, // BR
+                bottomLeftX +b()+c(), bottomLeftY + d(), //TR
+                bottomLeftX + c(), bottomLeftY + a()+d() //TL
         };
     }
 
@@ -54,19 +70,19 @@ class IsometricBox implements Renderable {
 
     private float[] getLeftVertices() {
         return new float[] {
-                blX, blY + height/2,
-                blX + width/2, blY,
-                blX + width/2, blY + depth,
-                blX, blY + height/2 + depth
+                bottomLeftX, bottomLeftY + a(),
+                bottomLeftX + b(), bottomLeftY,
+                bottomLeftX + + b(), bottomLeftY + depth,
+                bottomLeftX, bottomLeftY + a() + depth
         };
     }
 
     private float[] getRightVertices() {
         return new float[] {
-                blX + width/2, blY,
-                blX + width, blY + height/2,
-                blX + width, blY + + height/2 + depth,
-                blX + width/2, blY + height + depth
+                bottomLeftX + b(), bottomLeftY,
+                bottomLeftX + b() + c(), bottomLeftY + d(),
+                bottomLeftX + b() + c(), bottomLeftY + d() + depth,
+                bottomLeftX + b(), bottomLeftY +  depth
         };
     }
 
@@ -137,7 +153,6 @@ class IsometricBox implements Renderable {
 
     @Override
     public void render(IsometricCamera camera, PolygonSpriteBatch spriteBatch) {
-        spriteBatch.setProjectionMatrix(camera.getProjection());
         spriteBatch.begin();
         spriteBatch.setColor(Color.LIGHT_GRAY);
         spriteBatch.draw(getLeftPolygonRegion(), getScreenX(), getScreenY());
@@ -154,5 +169,13 @@ class IsometricBox implements Renderable {
 
     public float getScreenY() {
         return screenY;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public float getWidth() {
+        return width;
     }
 }
