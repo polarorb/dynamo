@@ -1,7 +1,6 @@
 package it.polarorb.dynamo;
 
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
-import com.sun.istack.internal.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ public class BoxGroup implements Renderable {
         }
     }
 
-    public BoxGroup(@NotNull List<IsometricBox> boxList) {
+    public BoxGroup(List<IsometricBox> boxList) {
         this((IsometricBox[]) boxList.toArray());
     }
 
