@@ -3,13 +3,14 @@ package it.polarorb.dynamo;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class DynamoDemo extends ApplicationAdapter {
+	private static final int COLUMNS = 1;
+	private static final int ROWS = 1;
 	SpriteBatch batch;
 	Texture img;
 	private PolygonSpriteBatch spriteBatch;
@@ -78,16 +79,13 @@ public class DynamoDemo extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(img, 0, 0);
 		batch.end();
-		spriteBatch.setProjectionMatrix(camera.getProjection());
-		spriteBatch.begin();
-		spriteBatch.setColor(Color.LIGHT_GRAY);
-		spriteBatch.draw(box.getLeftPolygonRegion(), 300, 150);
-		spriteBatch.setColor(Color.GRAY);
-		spriteBatch.draw(box.getRightPolygonRegion(), 300, 150);
-		spriteBatch.setColor(Color.DARK_GRAY);
-		spriteBatch.draw(box.getRoofPolygonRegion(), 300, 150);
-		spriteBatch.end();
-
+		for (int x = 0; x < COLUMNS; x++) {
+			for (int y = 0; y < ROWS; y++) {
+				box.setScreenX(y * IsometricBox.DEFAULT_WIDTH/2);
+				box.setScreenY(x * IsometricBox.DEFAULT_HEIGHT/2);
+				box.render(camera, spriteBatch);
+			}
+		}
 	}
 	
 	@Override

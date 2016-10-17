@@ -1,15 +1,16 @@
 package it.polarorb.dynamo;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonRegion;
-import com.badlogic.gdx.graphics.g2d.PolygonSprite;
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-class IsometricBox {
+class IsometricBox implements Renderable {
 
-    private static final float DEFAULT_WIDTH = 64;
-    private static final float DEFAULT_HEIGHT = 32;
+    static final float DEFAULT_WIDTH = 64;
+    static final float DEFAULT_HEIGHT = 32;
     private static final float DEFAULT_DEPTH = (float) Math.sqrt(DEFAULT_HEIGHT*DEFAULT_HEIGHT + DEFAULT_WIDTH*DEFAULT_WIDTH);
     private final float width;
     private final float height;
@@ -17,6 +18,11 @@ class IsometricBox {
 
     private float blX;
     private float blY;
+    private float screenX;
+    private float screenY;
+    private PolygonRegion rightPolygonRegion;
+    private PolygonRegion leftPolygonRegion;
+    private PolygonRegion roofPolygonRegion;
 
     IsometricBox() {
         this(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_DEPTH);
@@ -64,72 +70,89 @@ class IsometricBox {
         };
     }
 
-    PolygonRegion getFloorPolygonRegion() {
-        // Creating the color filling (but textures would work the same way)
-        Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pix.setColor(0xDEADBEFF); // DE is red, AD is green and BE is blue.
-        pix.fill();
-
-        Texture textureSolid = new Texture(pix);
-
-        PolygonRegion polyReg = new PolygonRegion(new TextureRegion(textureSolid),
-                getBaseVertices(), new short[] {
-                0, 1, 2,         // Two triangles using vertex indices.
-                2, 3, 0          // Take care of the counter-clockwise direction.
-        });
-
-        return polyReg;
-    }
-
-
     PolygonRegion getLeftPolygonRegion() {
-        // Creating the color filling (but textures would work the same way)
-        Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pix.setColor(0xDEADBEFF); // DE is red, AD is green and BE is blue.
-        pix.fill();
+        if (leftPolygonRegion == null) {
+            // Creating the color filling (but textures would work the same way)
+            Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+            pix.setColor(0xDEADBEFF); // DE is red, AD is green and BE is blue.
+            pix.fill();
 
-        Texture textureSolid = new Texture(pix);
+            Texture textureSolid = new Texture(pix);
 
-        PolygonRegion polyReg = new PolygonRegion(new TextureRegion(textureSolid),
-                getLeftVertices(), new short[] {
-                0, 1, 2,         // Two triangles using vertex indices.
-                2, 3, 0          // Take care of the counter-clockwise direction.
-        });
+            leftPolygonRegion = new PolygonRegion(new TextureRegion(textureSolid),
+                    getLeftVertices(), new short[] {
+                    0, 1, 2,         // Two triangles using vertex indices.
+                    2, 3, 0          // Take care of the counter-clockwise direction.
+            });
+        }
 
-        return polyReg;
+        return leftPolygonRegion;
     }
 
     PolygonRegion getRightPolygonRegion() {
-        // Creating the color filling (but textures would work the same way)
-        Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pix.setColor(0xDEADBEFF); // DE is red, AD is green and BE is blue.
-        pix.fill();
+        if (rightPolygonRegion == null) {
+            // Creating the color filling (but textures would work the same way)
+            Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+            pix.setColor(0xDEADBEFF); // DE is red, AD is green and BE is blue.
+            pix.fill();
 
-        Texture textureSolid = new Texture(pix);
+            Texture textureSolid = new Texture(pix);
 
-        PolygonRegion polyReg = new PolygonRegion(new TextureRegion(textureSolid),
-                getRightVertices(), new short[] {
-                0, 1, 2,         // Two triangles using vertex indices.
-                2, 3, 0          // Take care of the counter-clockwise direction.
-        });
+            rightPolygonRegion = new PolygonRegion(new TextureRegion(textureSolid),
+                    getRightVertices(), new short[] {
+                    0, 1, 2,         // Two triangles using vertex indices.
+                    2, 3, 0          // Take care of the counter-clockwise direction.
+            });
+        }
 
-        return polyReg;
+        return rightPolygonRegion;
     }
 
     PolygonRegion getRoofPolygonRegion() {
-        // Creating the color filling (but textures would work the same way)
-        Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pix.setColor(0xDEADBEFF); // DE is red, AD is green and BE is blue.
-        pix.fill();
+        if (roofPolygonRegion == null) {
+            // Creating the color filling (but textures would work the same way)
+            Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+            pix.setColor(0xDEADBEFF); // DE is red, AD is green and BE is blue.
+            pix.fill();
 
-        Texture textureSolid = new Texture(pix);
+            Texture textureSolid = new Texture(pix);
 
-        PolygonRegion polyReg = new PolygonRegion(new TextureRegion(textureSolid),
-                getRoofVertices(), new short[] {
-                0, 1, 2,         // Two triangles using vertex indices.
-                2, 3, 0          // Take care of the counter-clockwise direction.
-        });
+            roofPolygonRegion = new PolygonRegion(new TextureRegion(textureSolid),
+                    getRoofVertices(), new short[] {
+                    0, 1, 2,         // Two triangles using vertex indices.
+                    2, 3, 0          // Take care of the counter-clockwise direction.
+            });
+        }
 
-        return polyReg;
+        return roofPolygonRegion;
+    }
+
+    public void setScreenX(float screenX) {
+        this.screenX = screenX;
+    }
+
+    public void setScreenY(float screenY) {
+        this.screenY = screenY;
+    }
+
+    @Override
+    public void render(IsometricCamera camera, PolygonSpriteBatch spriteBatch) {
+        spriteBatch.setProjectionMatrix(camera.getProjection());
+        spriteBatch.begin();
+        spriteBatch.setColor(Color.LIGHT_GRAY);
+        spriteBatch.draw(getLeftPolygonRegion(), getScreenX(), getScreenY());
+        spriteBatch.setColor(Color.GRAY);
+        spriteBatch.draw(getRightPolygonRegion(), getScreenX(), getScreenY());
+        spriteBatch.setColor(Color.DARK_GRAY);
+        spriteBatch.draw(getRoofPolygonRegion(), getScreenX(), getScreenY());
+        spriteBatch.end();
+    }
+
+    public float getScreenX() {
+        return screenX;
+    }
+
+    public float getScreenY() {
+        return screenY;
     }
 }
