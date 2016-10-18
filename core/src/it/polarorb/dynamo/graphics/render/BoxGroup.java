@@ -1,4 +1,4 @@
-package it.polarorb.dynamo;
+package it.polarorb.dynamo.graphics.render;
 
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by erikrahtjen on 10/16/16.
  */
-public class BoxGroup implements Renderable {
+public class BoxGroup extends AbstractBoxGroup {
     List<IsometricBox> renderables;
 
     public BoxGroup(IsometricBox... isometricBoxes) {
@@ -23,10 +23,9 @@ public class BoxGroup implements Renderable {
     }
 
     @Override
-    public void render(IsometricCamera camera, PolygonSpriteBatch spriteBatch) {
-        for (IsometricBox box : renderables) {
-            box.render(camera, spriteBatch);
+    protected void render(PolygonSpriteBatch spriteBatch) {
+        for (int i = 0; i < renderables.size(); i++) {
+            renderables.get(i).render(spriteBatch);
         }
     }
-
 }
