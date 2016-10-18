@@ -8,19 +8,23 @@ import com.badlogic.gdx.math.Matrix4;
  * Created by erikrahtjen on 10/15/16.
  */
 public class IsometricCamera {
-    private static final int BEZEL = 40;
+    private static final float BEZEL_VERTICAL = .2f;
+    private static final float BEZEL_HORIZONTAL = .3f;
     OrthographicCamera camera;
     private float horizontalMovementMultiplier;
     private float verticalMovementMultiplier;
-    private float scrollSpeed = 1.1f;
+    private float scrollSpeedX = 6.5f;
+    private float scrollSpeedY = 4.5f;
+    private float percentScrollX;
+    private float percentScrollY;
 
     public IsometricCamera() {
         camera = new OrthographicCamera();
-        camera.setToOrtho(true);
+        camera.setToOrtho(false);
     }
 
     public void update() {
-        camera.position.add(horizontalMovementMultiplier*scrollSpeed, verticalMovementMultiplier*scrollSpeed, 0);
+        camera.position.add(horizontalMovementMultiplier * scrollSpeedX * percentScrollX, verticalMovementMultiplier * scrollSpeedY * percentScrollY, 0);
         camera.update();
     }
 
@@ -29,13 +33,16 @@ public class IsometricCamera {
     }
 
     public void onMouseMoved(int mouseLocationX, int mouseLocationY) {
-        System.out.println("Mouse Loc:" + mouseLocationX + ", " + mouseLocationY);
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
-        if (mouseLocationX > screenWidth - BEZEL) {
+        float bezelLeft = BEZEL_HORIZONTAL * screenWidth;
+        float bezelRight = screenWidth - bezelLeft;
+        if (mouseLocationX > bezelRight) {
+            percentScrollX = (mouseLocationX - bezelRight)/bezelLeft;
             //moving right
             horizontalMovementMultiplier = 1;
-        } else if (mouseLocationX < BEZEL) {
+        } else if (mouseLocationX < bezelLeft) {
+            percentScrollX = (bezelLeft - mouseLocationX)/bezelLeft;
             //moving left
             horizontalMovementMultiplier = -1;
         } else {
@@ -43,16 +50,20 @@ public class IsometricCamera {
             horizontalMovementMultiplier = 0;
         }
 
-        if (mouseLocationY < BEZEL) {
-            //moving up
-            verticalMovementMultiplier = -1;
-        } else if (mouseLocationY > screenHeight - BEZEL) {
+        float bezelBottom = BEZEL_VERTICAL * screenHeight;
+        float bezelTop = screenHeight - bezelBottom;
+        if (mouseLocationY > bezelTop) {
+            percentScrollY = (mouseLocationY - bezelTop)/bezelBottom;
             //moving down
+            verticalMovementMultiplier = -1;
+        } else if (mouseLocationY < bezelBottom) {
+            percentScrollY = (bezelBottom - mouseLocationY)/bezelBottom;
+            //moving up
             verticalMovementMultiplier = 1;
-        }
-        else {
+        } else {
             //not moving vertically
             verticalMovementMultiplier = 0;
         }
+        System.out.println("Mouse Speed:" + percentScrollY);
     }
 }

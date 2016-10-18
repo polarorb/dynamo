@@ -1,27 +1,30 @@
 package it.polarorb.dynamo;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonRegion;
-import com.badlogic.gdx.graphics.g2d.PolygonSprite;
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-/**
- * Created by erikrahtjen on 10/15/16.
- */
-public class IsometricBox {
+class IsometricBox implements Renderable {
 
-    private static final float DEFAULT_WIDTH = 64;
-    private static final float DEFAULT_HEIGHT = 32;
-    private static final float DEFAULT_DEPTH = 0;
+    static final float DEFAULT_WIDTH = 64;
+    static final float DEFAULT_HEIGHT = 64;
+    static final float DEFAULT_DEPTH = 64;
     private final float width;
     private final float height;
     private final float depth;
 
-    private float blX;
-    private float blY;
+    private float bottomLeftX;
+    private float bottomLeftY;
+    private float screenX;
+    private float screenY;
+    private PolygonRegion rightPolygonRegion;
+    private PolygonRegion leftPolygonRegion;
+    private PolygonRegion roofPolygonRegion;
 
-    public IsometricBox() {
+    IsometricBox() {
         this(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_DEPTH);
     }
 
@@ -31,37 +34,148 @@ public class IsometricBox {
         this.depth = depth;
     }
 
-    public float[] getFloorVertices() {
+    float a() {
+        return width/2f;
+    }
+
+    float b() {
+        return (float) (Math.sqrt(3f)*a());
+    }
+
+    float d() {
+        return height/2f;
+    }
+
+    float c() {
+        return (float) (Math.sqrt(3f)*d());
+    }
+
+    private float[] getBaseVertices() {
         return new float[]{
-                blX,blY+height/2, // BL
-                blX+width/2, blY, // BR
-                blX+width, blY + height/2, //TR
-                blX + width/2, blY + height //TL
+                bottomLeftX, bottomLeftY +a(), // BL
+                bottomLeftX +b(), bottomLeftY, // BR
+                bottomLeftX +b()+c(), bottomLeftY + d(), //TR
+                bottomLeftX + c(), bottomLeftY + a()+d() //TL
         };
     }
 
-    public PolygonRegion getFloorPolygonRegion() {
-        // Creating the color filling (but textures would work the same way)
-        Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pix.setColor(0xDEADBEFF); // DE is red, AD is green and BE is blue.
-        pix.fill();
+    private float[] getRoofVertices() {
+        float[] base = getBaseVertices();
+        for (int i = 1; i < base.length; i=i+2) {
+            base[i] += depth;
+        }
 
-        Texture textureSolid = new Texture(pix);
-
-        PolygonRegion polyReg = new PolygonRegion(new TextureRegion(textureSolid),
-                getFloorVertices(), new short[] {
-                0, 1, 2,         // Two triangles using vertex indices.
-                2, 3, 0          // Take care of the counter-clockwise direction.
-        });
-
-        return polyReg;
+        return base;
     }
 
-    public PolygonSprite getFloorPolygonSprite() {
-        PolygonSprite poly;
-        PolygonRegion polyReg = getFloorPolygonRegion();
-        poly = new PolygonSprite(polyReg);
-        poly.setOrigin(blX, blY);
-        return poly;
+    private float[] getLeftVertices() {
+        return new float[] {
+                bottomLeftX, bottomLeftY + a(),
+                bottomLeftX + b(), bottomLeftY,
+                bottomLeftX + + b(), bottomLeftY + depth,
+                bottomLeftX, bottomLeftY + a() + depth
+        };
+    }
+
+    private float[] getRightVertices() {
+        return new float[] {
+                bottomLeftX + b(), bottomLeftY,
+                bottomLeftX + b() + c(), bottomLeftY + d(),
+                bottomLeftX + b() + c(), bottomLeftY + d() + depth,
+                bottomLeftX + b(), bottomLeftY +  depth
+        };
+    }
+
+    PolygonRegion getLeftPolygonRegion() {
+        if (leftPolygonRegion == null) {
+            // Creating the color filling (but textures would work the same way)
+            Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+            pix.setColor(0xDEADBEFF); // DE is red, AD is green and BE is blue.
+            pix.fill();
+
+            Texture textureSolid = new Texture(pix);
+
+            leftPolygonRegion = new PolygonRegion(new TextureRegion(textureSolid),
+                    getLeftVertices(), new short[] {
+                    0, 1, 2,         // Two triangles using vertex indices.
+                    2, 3, 0          // Take care of the counter-clockwise direction.
+            });
+        }
+
+        return leftPolygonRegion;
+    }
+
+    PolygonRegion getRightPolygonRegion() {
+        if (rightPolygonRegion == null) {
+            // Creating the color filling (but textures would work the same way)
+            Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+            pix.setColor(0xDEADBEFF); // DE is red, AD is green and BE is blue.
+            pix.fill();
+
+            Texture textureSolid = new Texture(pix);
+
+            rightPolygonRegion = new PolygonRegion(new TextureRegion(textureSolid),
+                    getRightVertices(), new short[] {
+                    0, 1, 2,         // Two triangles using vertex indices.
+                    2, 3, 0          // Take care of the counter-clockwise direction.
+            });
+        }
+
+        return rightPolygonRegion;
+    }
+
+    PolygonRegion getRoofPolygonRegion() {
+        if (roofPolygonRegion == null) {
+            // Creating the color filling (but textures would work the same way)
+            Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+            pix.setColor(0xDEADBEFF); // DE is red, AD is green and BE is blue.
+            pix.fill();
+
+            Texture textureSolid = new Texture(pix);
+
+            roofPolygonRegion = new PolygonRegion(new TextureRegion(textureSolid),
+                    getRoofVertices(), new short[] {
+                    0, 1, 2,         // Two triangles using vertex indices.
+                    2, 3, 0          // Take care of the counter-clockwise direction.
+            });
+        }
+
+        return roofPolygonRegion;
+    }
+
+    public void setScreenX(float screenX) {
+        this.screenX = screenX;
+    }
+
+    public void setScreenY(float screenY) {
+        this.screenY = screenY;
+    }
+
+    @Override
+    public void render(IsometricCamera camera, PolygonSpriteBatch spriteBatch) {
+        spriteBatch.begin();
+        spriteBatch.setColor(Color.LIGHT_GRAY);
+        spriteBatch.draw(getLeftPolygonRegion(), getScreenX(), getScreenY());
+        spriteBatch.setColor(Color.GRAY);
+        spriteBatch.draw(getRightPolygonRegion(), getScreenX(), getScreenY());
+        spriteBatch.setColor(Color.DARK_GRAY);
+        spriteBatch.draw(getRoofPolygonRegion(), getScreenX(), getScreenY());
+        spriteBatch.end();
+    }
+
+    public float getScreenX() {
+        return screenX;
+    }
+
+    public float getScreenY() {
+        return screenY;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public float getWidth() {
+        return width;
     }
 }

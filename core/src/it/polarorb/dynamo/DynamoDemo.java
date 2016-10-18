@@ -9,19 +9,30 @@ import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class DynamoDemo extends ApplicationAdapter {
+	private static final int COLUMNS = 1;
+	private static final int ROWS = 1;
 	SpriteBatch batch;
 	Texture img;
 	private PolygonSpriteBatch spriteBatch;
 	private IsometricBox box;
 	private IsometricCamera camera;
 	private InputProcessor inputProcessor;
+    private BoxGroup northWestWallTile;
 
-	@Override
+    @Override
 	public void create () {
 		batch = new SpriteBatch();
 		spriteBatch = new PolygonSpriteBatch();
-		box = new IsometricBox();
-		img = new Texture("core/assets/badlogic.jpg");
+        IsometricBox floor = new IsometricBox(IsometricBox.DEFAULT_WIDTH*3, IsometricBox.DEFAULT_HEIGHT*3, 2);
+        IsometricBox wall = new IsometricBox(2, floor.getHeight(), IsometricBox.DEFAULT_DEPTH);
+        wall.setScreenY(floor.a());
+        IsometricBox owall = new IsometricBox(floor.getWidth(), 2, IsometricBox.DEFAULT_DEPTH);
+        owall.setScreenX(floor.c());
+        owall.setScreenY(floor.d());
+        IsometricBox wall2 = new IsometricBox(2, floor.getHeight(), IsometricBox.DEFAULT_DEPTH);
+        wall2.setScreenX(floor.b());
+        northWestWallTile = new BoxGroup(floor, wall, owall, wall2);
+        img = new Texture("core/assets/badlogic.jpg");
 		camera = new IsometricCamera();
 
 		inputProcessor = new InputProcessor() {
@@ -71,18 +82,14 @@ public class DynamoDemo extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(1, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
 		batch.begin();
 		batch.draw(img, 0, 0);
 		batch.end();
-		spriteBatch.setProjectionMatrix(camera.getProjection());
-		spriteBatch.begin();
-		spriteBatch.draw(box.getFloorPolygonRegion(), 0, 0);
-		spriteBatch.draw(box.getFloorPolygonRegion(), 32, -16);
-		spriteBatch.end();
-
+        spriteBatch.setProjectionMatrix(camera.getProjection());
+        northWestWallTile.render(camera, spriteBatch);
 	}
 	
 	@Override
