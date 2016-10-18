@@ -1,4 +1,4 @@
-package it.polarorb.dynamo;
+package it.polarorb.dynamo.graphics.render;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -7,11 +7,11 @@ import com.badlogic.gdx.graphics.g2d.PolygonRegion;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-class IsometricBox implements Renderable {
+public class IsometricBox extends AbstractBoxGroup {
 
-    static final float DEFAULT_WIDTH = 64;
-    static final float DEFAULT_HEIGHT = 64;
-    static final float DEFAULT_DEPTH = 64;
+    public static final float DEFAULT_WIDTH = 64;
+    public static final float DEFAULT_HEIGHT = 64;
+    public static final float DEFAULT_DEPTH = 64;
     private final float width;
     private final float height;
     private final float depth;
@@ -34,19 +34,19 @@ class IsometricBox implements Renderable {
         this.depth = depth;
     }
 
-    float a() {
+    public float a() {
         return width/2f;
     }
 
-    float b() {
+    public float b() {
         return (float) (Math.sqrt(3f)*a());
     }
 
-    float d() {
+    public float d() {
         return height/2f;
     }
 
-    float c() {
+    public float c() {
         return (float) (Math.sqrt(3f)*d());
     }
 
@@ -152,15 +152,13 @@ class IsometricBox implements Renderable {
     }
 
     @Override
-    public void render(IsometricCamera camera, PolygonSpriteBatch spriteBatch) {
-        spriteBatch.begin();
+    public void render(PolygonSpriteBatch spriteBatch) {
         spriteBatch.setColor(Color.LIGHT_GRAY);
         spriteBatch.draw(getLeftPolygonRegion(), getScreenX(), getScreenY());
         spriteBatch.setColor(Color.GRAY);
         spriteBatch.draw(getRightPolygonRegion(), getScreenX(), getScreenY());
         spriteBatch.setColor(Color.DARK_GRAY);
         spriteBatch.draw(getRoofPolygonRegion(), getScreenX(), getScreenY());
-        spriteBatch.end();
     }
 
     public float getScreenX() {
