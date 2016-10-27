@@ -24,6 +24,8 @@ public class DynamoDemo extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		Logger.log("Game create() called", getClass());
+
 		batch = new SpriteBatch();
 		spriteBatch = new PolygonSpriteBatch();
         IsometricBox floor = new IsometricBox(IsometricBox.DEFAULT_WIDTH*3, IsometricBox.DEFAULT_HEIGHT*3, 2);
